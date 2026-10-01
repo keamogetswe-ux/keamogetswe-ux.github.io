@@ -62,6 +62,12 @@
          font-size: 15px; padding: 14px 28px; border-radius: 6px; text-decoration: none; }
   .btn:hover { background: #1D4FD7; }
   .cta .smallprint { color: var(--faint); }
+  .intake-card { margin-top: 28px; border: 1px solid #2A2F36; border-radius: 10px; padding: 28px; background: #16191D; }
+  .intake-title { font-size: 14px; color: #C9CFD6; margin-bottom: 16px; }
+  .intake-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn.ghost { background: transparent; border: 1px solid #3A4149; color: #C9CFD6; cursor: pointer; font-family: inherit; }
+  .btn.ghost:hover { background: #1E2227; border-color: #4A525B; }
+  .intake-card .smallprint { margin-top: 16px; }
 
   footer { padding: 32px 0 48px; font-size: 12.5px; color: var(--faint); }
   footer .line { color: var(--sub); margin-top: 6px; }
@@ -128,10 +134,62 @@
     <div class="eyebrow-row"><div class="bar"></div><div class="eyebrow">FREE SAMPLE</div></div>
     <h2>Start with a free sample.</h2>
     <p class="lede">Send us one month of your real metrics. We'll produce a full investor update from it — free, no obligation. If it doesn't save you an afternoon, delete it.</p>
-    <a class="btn" href="mailto:hello@runwayreport.co?subject=Free%20sample%20request">Request your free sample</a>
-    <p class="smallprint">We respond within 24 hours. Your data is used only to produce your reports and is never shared.</p>
+
+    <div class="intake-card">
+      <p class="intake-title">One email starts it. The button below opens your mail app with everything we need — fill in the blanks, attach your metrics (CSV, screenshot, or paste), and send.</p>
+      <div class="intake-actions">
+        <a class="btn" id="mailtoBtn" href="#">Email my metrics</a>
+        <button class="btn ghost" id="copyBtn" type="button">Copy intake template</button>
+      </div>
+      <textarea id="intakeTemplate" readonly style="position:absolute;left:-9999px;">Hi Runway Report,
+
+I'd like my free sample investor update.
+
+1. Company name:
+2. Website:
+3. My email (for delivery):
+4. Tier: Essential / Growth / Fund
+5. Reporting month:
+
+Metrics (attach a CSV or screenshot, or paste below):
+- MRR / ARR:
+- Burn:
+- Runway (months):
+- Headcount:
+- Churn:
+- Other KPIs:
+
+Optional:
+- Last month's report (attach, for style continuity):
+- Logo or brand color (hex):
+- Anything investors must know this month:
+- What we should never mention to investors:
+
+— sent from runwayreport</textarea>
+      <p class="smallprint">No form, no account, no signup — your data arrives by email and is used only to produce your reports. We respond within 24 hours and deliver within 48.</p>
+    </div>
   </div>
 </section>
+
+<script>
+(function () {
+  var EMAIL = "hello@runwayreport.co";
+  var subject = "Free sample — intake (Runway Report)";
+  var body = document.getElementById("intakeTemplate").value;
+  document.getElementById("mailtoBtn").href =
+    "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var t = document.getElementById("intakeTemplate");
+    t.style.position = "static"; t.style.opacity = "0"; t.style.height = "1px";
+    t.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    navigator.clipboard && navigator.clipboard.writeText(body);
+    this.textContent = "Copied — paste it in any email";
+    var b = this;
+    setTimeout(function () { b.textContent = "Copy intake template"; }, 3000);
+  });
+})();
+</script>
 
 <footer>
   <div class="wrap">
